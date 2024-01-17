@@ -1,0 +1,31 @@
+<!-- ic_burger_menu.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Top line -->
+    <item
+        android:top="0dp">
+        <shape android:shape="rectangle">
+            <size android:width="30dp" android:height="4dp"/>
+            <solid android:color="#FFFFFF"/>
+        </shape>
+    </item>
+
+    <!-- Middle line -->
+    <item
+        android:top="5dp">
+        <shape android:shape="rectangle">
+            <size android:width="30dp" android:height="4dp"/>
+            <solid android:color="#FFFFFF"/>
+        </shape>
+    </item>
+
+    <!-- Bottom line -->
+    <item
+        android:top="15dp">
+        <shape android:shape="rectangle">
+            <size android:width="30dp" android:height="4dp"/>
+            <solid android:color="#FFFFFF"/>
+        </shape>
+    </item>
+
+</layer-list>

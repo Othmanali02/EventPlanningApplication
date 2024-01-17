@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity"
+    android:background="@color/back"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/navbar"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="#07601f">
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/bzu"
+
+            android:layout_centerVertical="true"/>
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Event Planner BZU"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:layout_toEndOf="@id/logo"
+            android:layout_marginStart="8dp"
+            android:layout_centerVertical="true"/>
+
+        <!-- Burger Menu -->
+        <ImageView
+            android:id="@+id/burgerMenu"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/burger"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"/>
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/navbar"
+        android:layout_marginTop="5dp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/ForYou"
+            android:layout_width="80dp"
+            android:layout_height="25dp"
+            app:backgroundTint="@color/white"
+
+            android:text="For You"
+            android:textColor="#000000"
+            android:padding="0dp"
+            android:background="@drawable/custom_button"
+            android:textSize="13dp"
+            android:layout_marginEnd="5dp"/>
+
+        <Button
+            android:id="@+id/Following"
+            android:layout_width="80dp"
+            app:backgroundTint="@color/white"
+
+            android:layout_height="25dp"
+            android:textColor="#000000"
+
+            android:text="Following"
+            android:padding="0dp"
+            android:textSize="13dp"
+
+            android:background="@drawable/custom_button"
+
+            android:layout_marginStart="5dp"/>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/followingEvents"
+        android:layout_width="match_parent"
+        android:layout_marginTop="120dp"
+        android:layout_height="match_parent" />
+
+
+</RelativeLayout>

@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "199123395135",
+    "firebase_url": "https://eventplanning-dc9b1-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "eventplanning-dc9b1",
+    "storage_bucket": "eventplanning-dc9b1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:199123395135:android:251b5808f38acb03b54e8a",
+        "android_client_info": {
+          "package_name": "com.example.eventplanningapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZ-q6VKGto7MjEDsfT3rgT1tZui9jZP4w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
