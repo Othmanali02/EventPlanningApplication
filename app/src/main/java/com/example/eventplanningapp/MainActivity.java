@@ -8,14 +8,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
@@ -29,14 +37,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        myRef = FirebaseDatabase.getInstance().getReference().child("Events");
         recyclerView = findViewById(R.id.followingEvents);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         eventList = new ArrayList<>();
-        myAdapter = new RecycleAdapter(this, eventList);
-        recyclerView.setAdapter(myAdapter);
+
+
+        fetchDataFromServer();
 
 //        Event eventTest = new Event(
 //                "Design Showcase",
@@ -50,24 +57,33 @@ public class MainActivity extends AppCompatActivity {
 //        );
 
 //        myRef.push().setValue(eventTest);
+    }
 
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot ds: snapshot.getChildren()){
-                    Event event = ds.getValue(Event.class);
-                    eventList.add(event);
+    private void fetchDataFromServer() {
+        String url = "http://10.0.2.2:5000/books";
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                response -> {
+                    Log.d("TaGGAGEGEA", response.toString());
+                    ArrayList<Event> eventList = parseJsonData(response.toString());
+                    myAdapter = new RecycleAdapter(this, eventList);
+                    recyclerView.setAdapter(myAdapter);
+                },
+                error -> {
+                    error.printStackTrace();
                 }
+        );
 
-                myAdapter.notifyDataSetChanged();
-            }
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jsonArrayRequest);
+    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-
+    private ArrayList<Event> parseJsonData(String jsonData) {
+        Gson gson = new Gson();
+        Type eventType = new TypeToken<List<Event>>() {}.getType();
+        return gson.fromJson(jsonData, eventType);
     }
 }
