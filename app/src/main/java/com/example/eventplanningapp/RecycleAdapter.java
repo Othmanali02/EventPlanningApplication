@@ -1,6 +1,7 @@
 package com.example.eventplanningapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,11 +40,19 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
         holder.title.setText(event.getEventName());
         holder.description.setText(event.getEventLocation());
         Log.d("Image", holder.image.getContext().toString());
+        Log.d("Event IDD", event.getEventID() + "");
 
 //        Drawable drawable = ContextCompat.getDrawable(holder.image.getContext(), event.getEventImage());
 //
         holder.image.setImageResource(event.getEventImage());
         holder.count.setText(event.getLikeCount());
+
+        holder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(view.getContext(), EventDetailsActivity.class);
+            intent.putExtra("eventID", event.getEventID() + "");
+
+            view.getContext().startActivity(intent);
+        }); 
 
     }
 
