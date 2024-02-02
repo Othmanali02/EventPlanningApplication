@@ -1,9 +1,12 @@
 package com.example.eventplanningapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +26,7 @@ import com.google.gson.reflect.TypeToken;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,22 +50,22 @@ public class EventDetailsActivity extends AppCompatActivity {
 
         eventImageUI = findViewById(R.id.eventPic);
         eventNameUI = findViewById(R.id.EVentName);
-        eventLocationUI = findViewById(R.id.location);
+//        eventLocationUI = findViewById(R.id.location);
         likeCountUI = findViewById(R.id.likeCount);
         eventDateUI = findViewById(R.id.date);
-        eventDescriptionUI = findViewById(R.id.description);
-        eventPlannerUI = findViewById(R.id.eventPlanner);
-        eventPricingUI = findViewById(R.id.pricing);
+//        eventDescriptionUI = findViewById(R.id.description);
+//        eventPlannerUI = findViewById(R.id.eventPlanner);
+//        eventPricingUI = findViewById(R.id.pricing);
 
 
         Intent intent = getIntent();
         String eventID = intent.getStringExtra("eventID");
         Log.d("event ID", eventID);
-        fetchDataFromServer(eventID);
+        fetchDataFromServer(eventID, this);
 
     }
 
-    private void fetchDataFromServer(String eventID) {
+    private void fetchDataFromServer(String eventID, Context context) {
         String url = "http://10.0.2.2:5000/events/" + eventID;
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -79,16 +83,30 @@ public class EventDetailsActivity extends AppCompatActivity {
                             String eventPlanner = response.getString("eventPlanner");
                             String eventPricing = response.getString("eventPricing");
                             int eventImageResource = response.getInt("eventImage");
+
+
                             eventImageUI.setImageResource(eventImageResource);
 
-                            eventPlannerUI.setText(eventPlanner);
-                            eventDescriptionUI.setText(eventDescription);
+//                            eventPlannerUI.setText(eventPlanner);
+//                            eventDescriptionUI.setText(eventDescription);
                             eventNameUI.setText(eventName);
-                            eventLocationUI.setText(eventLocation);
+//                            eventLocationUI.setText(eventLocation);
                             eventDateUI.setText(eventDate);
 
-                            eventPricingUI.setText(eventPricing);
+//                            eventPricingUI.setText(eventPricing);
                             likeCountUI.setText(likeCount);
+                            ArrayList<String> eventList = new ArrayList<String>();
+
+
+                            eventList.add(eventLocation);
+                            eventList.add(eventDescription);
+                            eventList.add(eventPlanner);
+                            eventList.add(eventPricing);
+                            Log.d("EventList", eventList.toString());
+
+                            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, eventList);
+                            ListView listView = findViewById(R.id.MetadatalistView);
+                            listView.setAdapter(adapter);
 
                         }catch (JSONException e) {
                             e.printStackTrace();
