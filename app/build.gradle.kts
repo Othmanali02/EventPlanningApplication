@@ -40,4 +40,9 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     implementation("de.gerdi-project:GSON:6.0.6")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation ("com.google.firebase:firebase-auth:22.3.1")
+    implementation("androidx.biometric:biometric:1.1.0")
+    implementation("com.android.volley:volley:1.2.1")
+    implementation ("com.google.android.gms:play-services-auth:20.7.0")
+    implementation ("com.google.android.gms:play-services-auth-api-phone:18.0.1")
 }

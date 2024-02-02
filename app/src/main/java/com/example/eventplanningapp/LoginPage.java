@@ -1,6 +1,8 @@
 package com.example.eventplanningapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +10,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -16,6 +19,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.Executor;
 
 public class LoginPage extends AppCompatActivity {
     private EditText UserEmail;
@@ -25,6 +29,9 @@ public class LoginPage extends AppCompatActivity {
     private HashMap<String,String> loginInfo;
     private CheckBox rememberMe;
     private boolean flag;
+    private BiometricPrompt biometricPrompt;
+    private BiometricPrompt.PromptInfo promptInfo;
+    private Button fingerprint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +43,51 @@ public class LoginPage extends AppCompatActivity {
         rememberMe=findViewById(R.id.rememberMe);
         loadData();
         LOGIN.setOnClickListener(view -> login());
+        fingerprint = findViewById(R.id.fingerprint);
+
+        createBiometricPrompt();
+        createPromptInfo();
+       // showBiometricPrompt();
+        fingerprint.setOnClickListener(v -> showBiometricPrompt());
         //flag=false;
 
 
+    }
+    private void createBiometricPrompt() {
+        Executor executor = ContextCompat.getMainExecutor(this);
+
+        biometricPrompt = new BiometricPrompt(this, executor, new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                // Fingerprint authentication succeeded
+
+                // Navigate to DashboardActivity
+                Intent intent = new Intent(LoginPage.this, Profile_page.class);
+                finish();
+                startActivity(intent);
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+                // Fingerprint authentication failed
+                Toast.makeText(LoginPage.this, "Authentication failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void createPromptInfo() {
+        promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Biometric Authentication")
+                .setSubtitle("Place your finger on the sensor")
+                .setNegativeButtonText("Cancel")
+                .build();
+    }
+
+    private void showBiometricPrompt() {
+        // Display the biometric prompt
+        biometricPrompt.authenticate(promptInfo);
     }
 
     // @Override
