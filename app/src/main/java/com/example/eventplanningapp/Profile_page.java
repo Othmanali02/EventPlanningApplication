@@ -2,20 +2,28 @@ package com.example.eventplanningapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 
 public class Profile_page extends AppCompatActivity {
@@ -67,29 +75,22 @@ public class Profile_page extends AppCompatActivity {
         if(!email.equals("No Email")){
             fireStore.collection("users").document(email).get().addOnSuccessListener( documentSnapshot -> {
 
-                String imageUrl = documentSnapshot.getString("imageUrl");
+                String base64Image = documentSnapshot.getString("imageUrl");
                 String name = documentSnapshot.getString("UserName");
                 String phone = documentSnapshot.getString("number");
                 Boolean Verified = documentSnapshot.getBoolean("verified_flage");
 
                     Email.setText(email);
                     Phone.setText(phone);
-
-                if (imageUrl != null && !imageUrl.isEmpty()) {
-                    //Uri uri = Uri.parse(imageUrl);
-
-                    Picasso.get().invalidate(imageUrl);
-                    Picasso.get().load(imageUrl).into(profileImage);
-
-
-
-                    // Set the drawable to the ImageButton
-
+                if (base64Image != null && !base64Image.isEmpty()) {
+                    byte[] decodedBytes = Base64.decode(base64Image, Base64.DEFAULT);
+                    Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                    profileImage.setImageBitmap(decodedBitmap);
                 } else {
-                // Handle empty or null imageUrl
-                // For example, load a default image or set a placeholder
-                profileImage.setImageResource(R.drawable.profilelogo);
-            }
+                    // Handle empty or null base64Image
+                    // For example, load a default image or set a placeholder
+                    profileImage.setImageResource(R.drawable.profilelogo);
+                }
             });
 
         }
@@ -108,6 +109,8 @@ public class Profile_page extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -125,7 +128,7 @@ public class Profile_page extends AppCompatActivity {
                 editor.apply();
                 if(!email.equals("No Email")){
                     fireStore.collection("users").document(email)
-                            .update("imageUrl", uri.toString());
+                            .update("imageUrl",  bitmapToBase64(uri));
                 }else {
                     Toast.makeText(this, "Please Login correctly , error  getting user email", Toast.LENGTH_SHORT).show();
                 }
@@ -139,5 +142,21 @@ public class Profile_page extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+    private String bitmapToBase64(Uri uri) {
+        try {
+            ContentResolver resolver = getContentResolver();
+            InputStream inputStream = resolver.openInputStream(uri);
+            if (inputStream != null) {
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                byte[] byteArray = byteArrayOutputStream.toByteArray();
+                return Base64.encodeToString(byteArray, Base64.DEFAULT);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }
