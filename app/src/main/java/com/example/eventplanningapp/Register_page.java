@@ -38,7 +38,7 @@ import java.util.Map;
 public class Register_page extends AppCompatActivity {
 
     private EditText userName, loginEmail, phoneNumber, password;
-    private boolean flag;
+    private boolean flag=false;
     private Button signUpButton;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
