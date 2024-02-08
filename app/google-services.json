@@ -1,14 +1,14 @@
 {
   "project_info": {
-    "project_number": "199123395135",
-    "firebase_url": "https://eventplanning-dc9b1-default-rtdb.europe-west1.firebasedatabase.app",
-    "project_id": "eventplanning-dc9b1",
-    "storage_bucket": "eventplanning-dc9b1.appspot.com"
+    "project_number": "49748770612",
+    "firebase_url": "https://bzu-event-planner-default-rtdb.firebaseio.com",
+    "project_id": "bzu-event-planner",
+    "storage_bucket": "bzu-event-planner.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:199123395135:android:251b5808f38acb03b54e8a",
+        "mobilesdk_app_id": "1:49748770612:android:003e3f2c90561d5cc42f61",
         "android_client_info": {
           "package_name": "com.example.eventplanningapp"
         }
@@ -16,7 +16,26 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDZ-q6VKGto7MjEDsfT3rgT1tZui9jZP4w"
+          "current_key": "AIzaSyDaOL-XLKza7I0tQYTFeLRT9xqxXRo5AiE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:49748770612:android:e52b9d06bf60c3d6c42f61",
+        "android_client_info": {
+          "package_name": "com.example.eventplanningapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaOL-XLKza7I0tQYTFeLRT9xqxXRo5AiE"
         }
       ],
       "services": {

@@ -1,3 +1,5 @@
 <resources>
+    <string name="AppName">Bzu Event Planner</string>
     <string name="app_name">Event Planning App</string>
+    <string name="ForgetPassword">Forget Password? </string>
 </resources>

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.google.firebase.database.DatabaseReference;
 
@@ -41,6 +43,11 @@ public class MainActivity extends AppCompatActivity {
     RecycleAdapter myAdapter;
     ArrayList<Event> eventList;
     Button createBtn;
+    Button profileBtn;
+
+    Button homeBtn;
+    private Button logout;
+
 
 
 
@@ -54,6 +61,39 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.followingEvents);
+        profileBtn = findViewById(R.id.ProfilePage);
+        homeBtn = findViewById(R.id.homePage);
+        logout = findViewById(R.id.logout);
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences sharedPreferences= getSharedPreferences("sharedPreferences",MODE_PRIVATE);
+                SharedPreferences.Editor editor=sharedPreferences.edit();
+
+                editor.putBoolean("remeberMe",false);
+                editor.apply();
+                Intent intent=new Intent(MainActivity.this,LoginPage.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        profileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, Profile_page.class);
+                startActivity(intent);
+            }
+        });
+
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         eventList = new ArrayList<>();
