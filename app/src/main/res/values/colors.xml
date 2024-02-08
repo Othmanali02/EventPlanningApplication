@@ -5,7 +5,8 @@
     <color name="red">#d11a2a</color>
     <color name="blue">#0d6efd</color>
 
-
+    <color name="text_gray">#808080</color>
+    <color name="green">#07601F</color>
     <color name="back">#f4f4f4</color>
     <color name="lightstroke">#A4A4A4</color>
 </resources>

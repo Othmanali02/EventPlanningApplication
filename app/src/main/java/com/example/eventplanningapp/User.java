@@ -5,13 +5,14 @@ public class User {
     protected boolean rememberMe_flage,verified_flage;
 
 
-    public User(String userName, String email, String password, String number, boolean rememberMe_flage, boolean verified_flage) {
+    public User(String userName, String email, String password, String number, boolean rememberMe_flage, boolean verified_flage, String imageUrl) {
         UserName = userName;
         Email = email;
         Password = password;
         Number = number;
         this.rememberMe_flage = rememberMe_flage;
         this.verified_flage = verified_flage;
+        this.imageUrl = imageUrl;
     }
 
     public boolean isVerified_flage() {

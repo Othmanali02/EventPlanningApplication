@@ -38,6 +38,7 @@ import java.util.Map;
 public class Register_page extends AppCompatActivity {
 
     private EditText userName, loginEmail, phoneNumber, password;
+    private boolean flag;
     private Button signUpButton;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -84,8 +85,9 @@ public class Register_page extends AppCompatActivity {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        User user = new User(userName, email, password, number, false,verfied);
+                        User user = new User(userName, email, password, number, false,verfied,"");
                         FirebaseFirestore.getInstance().collection("users").document(email).set(user);
+                        saveData();
                         Intent intent = new Intent(Register_page.this, MainActivity.class);
                         startActivity(intent);
                         finish();
@@ -112,6 +114,17 @@ public class Register_page extends AppCompatActivity {
                         Toast.makeText(Register_page.this, "Authentication failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void saveData(){
+
+        SharedPreferences sharedPreferences= getSharedPreferences("sharedPreferences",MODE_PRIVATE);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        Toast.makeText(this, "flag "+flag, Toast.LENGTH_SHORT).show();
+        editor.putBoolean("remeberMe", flag);
+        editor.putString("email",loginEmail.getText().toString());
+        editor.putString("password",password.getText().toString());
+        editor.apply();
     }
  /*   protected void onStart() {
         super.onStart();
