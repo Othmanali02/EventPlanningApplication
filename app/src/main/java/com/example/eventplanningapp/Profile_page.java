@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 //import com.bumptech.glide.Glide;
@@ -36,6 +37,7 @@ public class Profile_page extends AppCompatActivity {
     private ImageButton editEmail;
     private ImageButton editPhone;
     private  String email;
+    private TextView username;
 
 
 
@@ -49,8 +51,9 @@ public class Profile_page extends AppCompatActivity {
         profileImage.setOnClickListener(v -> openGallery(v));
         Email = findViewById(R.id.profileUserEmail);
         Phone = findViewById(R.id.profileUserNumber);
-        editEmail = findViewById(R.id.editEmail);
+
         editPhone = findViewById(R.id.EditPhone);
+        username=findViewById(R.id.UserNameProfile);
         String email=sharedPreferences.getString("email","No Email");
 //        editEmail.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -76,12 +79,13 @@ public class Profile_page extends AppCompatActivity {
             fireStore.collection("users").document(email).get().addOnSuccessListener( documentSnapshot -> {
 
                 String base64Image = documentSnapshot.getString("imageUrl");
-                String name = documentSnapshot.getString("UserName");
+                String name = documentSnapshot.getString("userName");
                 String phone = documentSnapshot.getString("number");
                 Boolean Verified = documentSnapshot.getBoolean("verified_flage");
 
                     Email.setText(email);
                     Phone.setText(phone);
+                    username.setText(name);
                 if (base64Image != null && !base64Image.isEmpty()) {
                     byte[] decodedBytes = Base64.decode(base64Image, Base64.DEFAULT);
                     Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);

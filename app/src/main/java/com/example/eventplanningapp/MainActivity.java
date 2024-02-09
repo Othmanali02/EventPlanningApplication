@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -32,6 +33,7 @@ import java.util.List;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 
@@ -44,9 +46,13 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Event> eventList;
     Button createBtn;
     Button profileBtn;
+    private final FirebaseFirestore fireStore = FirebaseFirestore.getInstance();
+    private SharedPreferences sharedPreferences;
 
     Button homeBtn;
     private Button logout;
+    private TextView userName;
+    private TextView UserEmail;
 
 
 
@@ -64,6 +70,28 @@ public class MainActivity extends AppCompatActivity {
         profileBtn = findViewById(R.id.ProfilePage);
         homeBtn = findViewById(R.id.homePage);
         logout = findViewById(R.id.logout);
+        userName = findViewById(R.id.UsernameMainPage);
+        UserEmail = findViewById(R.id.UserEmailMainPage);
+        sharedPreferences = getSharedPreferences("sharedPreferences", MODE_PRIVATE);
+
+
+        String email=sharedPreferences.getString("email","No Email");
+        if(!email.equals("No Email")){
+            fireStore.collection("users").document(email).get().addOnSuccessListener( documentSnapshot -> {
+
+                String base64Image = documentSnapshot.getString("imageUrl");
+                String name = documentSnapshot.getString("userName");
+                String phone = documentSnapshot.getString("number");
+                Boolean Verified = documentSnapshot.getBoolean("verified_flage");
+
+                UserEmail.setText(email);
+                userName.setText(name);
+
+            });
+
+        }
+
+
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
