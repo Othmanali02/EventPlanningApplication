@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/menuEditpage"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <RelativeLayout
@@ -10,35 +11,39 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="#07601f"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
+
         <ImageView
             android:id="@+id/logo"
             android:layout_width="50dp"
             android:layout_height="match_parent"
+            android:layout_centerVertical="true"
             android:layout_marginStart="16dp"
-            android:src="@drawable/bzu"
 
-            android:layout_centerVertical="true"/>
+            android:src="@drawable/bzu" />
+
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@id/logo"
             android:text="Event Planner BZU"
             android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            android:layout_toEndOf="@id/logo"
-            android:layout_marginStart="8dp"
-            android:layout_centerVertical="true"/>
-        <ImageView
+            android:textSize="20sp" />
+
+        <ImageButton
             android:id="@+id/burgerMenu"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/burger"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="16dp"/>
+            android:layout_marginEnd="16dp"
+            android:background="#00FFFFFF"
+            android:src="@drawable/menuburger" />
 
     </RelativeLayout>
 
@@ -47,41 +52,42 @@
         android:id="@+id/headerTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Edit Event"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:paddingLeft="25dp"
+        android:background="#f4f4f4"
         android:gravity="left"
         android:padding="16dp"
-        android:background="#f4f4f4"
+        android:paddingLeft="25dp"
+        android:text="Edit Event"
         android:textColor="#000000"
-        app:layout_constraintTop_toBottomOf="@id/navbar"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/navbar" />
 
     <LinearLayout
+        android:id="@+id/form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/headerTextView"
         android:orientation="vertical"
-        android:id="@+id/form"
         android:padding="16dp"
-        app:layout_constraintTop_toBottomOf="@id/headerTextView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/headerTextView">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginStart="3dp"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:text="Name:"
-                android:textStyle="bold"
-                android:layout_marginEnd="8dp"/>
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/nameEditText"
@@ -92,27 +98,27 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_marginStart="3dp"
-
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+
+            android:layout_marginStart="3dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
+                android:layout_marginEnd="8dp"
 
                 android:text="Date:"
-                android:layout_marginEnd="8dp"/>
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/dateInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Select Event Date"
+                android:clickable="true"
                 android:focusable="false"
-                android:clickable="true"/>
+                android:hint="Select Event Date" />
         </LinearLayout>
 
         <LinearLayout
@@ -120,15 +126,16 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="3dp"
 
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:text="Location:"
-                android:textStyle="bold"
 
-                android:layout_marginEnd="8dp"/>
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/locationEditText"
@@ -140,18 +147,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginStart="3dp"
+            android:gravity="center_vertical"
 
-            android:gravity="center_vertical">
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:text="Description:"
-                android:textStyle="bold"
 
-                android:layout_marginEnd="8dp"/>
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/descriptionEdit"
@@ -163,18 +170,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginStart="3dp"
+            android:gravity="center_vertical"
 
-            android:gravity="center_vertical">
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:text="Pricing:"
-                android:textStyle="bold"
 
-                android:layout_marginEnd="8dp"/>
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/eventPricing"
@@ -184,36 +191,34 @@
         </LinearLayout>
 
 
-
-
     </LinearLayout>
 
     <Button
         android:id="@+id/createEventtt"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="Confirm Edit"
-        android:textSize="24dp"
         android:layout_gravity="center"
-        android:backgroundTint="@color/blue"
-
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/form"
+        android:backgroundTint="@color/blue"
+        android:text="Confirm Edit"
+
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/form" />
 
     <Button
         android:id="@+id/deleteEventtt"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="Delete Event"
-        android:textSize="24dp"
-        android:backgroundTint="@color/red"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/createEventtt"
+        android:backgroundTint="@color/red"
+        android:text="Delete Event"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/createEventtt" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
