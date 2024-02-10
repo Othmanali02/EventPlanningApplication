@@ -15,6 +15,14 @@ public class User {
         this.imageUrl = imageUrl;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public boolean isVerified_flage() {
         return verified_flage;
     }

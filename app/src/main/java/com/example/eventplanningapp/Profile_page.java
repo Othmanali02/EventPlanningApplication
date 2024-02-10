@@ -108,6 +108,8 @@ public class Profile_page extends AppCompatActivity {
     private void updatePhone( String phone) {
         fireStore.collection("users").document(email)
                 .update("number", phone);
+        Toast.makeText(this, "Phone Number Updated", Toast.LENGTH_SHORT).show();
+
     }
     public void openGallery(View view) {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);

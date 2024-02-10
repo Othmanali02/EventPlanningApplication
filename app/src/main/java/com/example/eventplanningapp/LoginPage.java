@@ -78,7 +78,7 @@ public class LoginPage extends AppCompatActivity {
                 // validate email regular expression
             if (email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
                     mAuth.sendPasswordResetEmail(email);
-                   // Toast.makeText(this, "Reset link sent to your email.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Reset link sent to your email.", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, "Email is not valid.", Toast.LENGTH_SHORT).show();
                 }

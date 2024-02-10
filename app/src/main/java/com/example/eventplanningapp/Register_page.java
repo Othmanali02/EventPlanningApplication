@@ -76,6 +76,7 @@ public class Register_page extends AppCompatActivity {
         String password = this.password.getText().toString().trim();
         String number = this.phoneNumber.getText().toString().trim();
         boolean verfied = this.Verfied.isChecked();
+        String imageUrl= "no image";
 
         if (userName.isEmpty() || email.isEmpty() || password.isEmpty() || number.isEmpty()) {
             Toast.makeText(Register_page.this, "Please fill all fields.", Toast.LENGTH_SHORT).show();
@@ -85,7 +86,7 @@ public class Register_page extends AppCompatActivity {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        User user = new User(userName, email, password, number, false,verfied,"");
+                        User user = new User(userName, email, password, number, false, verfied, imageUrl);
                         FirebaseFirestore.getInstance().collection("users").document(email).set(user);
                         saveData();
                         Intent intent = new Intent(Register_page.this, MainActivity.class);

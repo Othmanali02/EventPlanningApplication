@@ -1,5 +1,6 @@
 package com.example.eventplanningapp;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 
@@ -32,8 +34,10 @@ import java.util.ArrayList;
 import java.util.List;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 
@@ -53,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
     private Button logout;
     private TextView userName;
     private TextView UserEmail;
+    private ImageButton Menu;
+    private   Boolean Verified;
 
 
 
@@ -72,6 +78,13 @@ public class MainActivity extends AppCompatActivity {
         logout = findViewById(R.id.logout);
         userName = findViewById(R.id.UsernameMainPage);
         UserEmail = findViewById(R.id.UserEmailMainPage);
+        Menu = findViewById(R.id.MenuMianPage);
+        Menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openNavigationDrawer();
+            }
+        });
         sharedPreferences = getSharedPreferences("sharedPreferences", MODE_PRIVATE);
 
 
@@ -82,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 String base64Image = documentSnapshot.getString("imageUrl");
                 String name = documentSnapshot.getString("userName");
                 String phone = documentSnapshot.getString("number");
-                Boolean Verified = documentSnapshot.getBoolean("verified_flage");
+                Verified = documentSnapshot.getBoolean("verified_flage");
 
                 UserEmail.setText(email);
                 userName.setText(name);
@@ -132,10 +145,14 @@ public class MainActivity extends AppCompatActivity {
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(Verified){
                 Log.d("Create Event", "it is working");
 
                 Intent intent = new Intent(MainActivity.this, CreateEvent.class);
                 startActivity(intent);
+            }else {
+                    Toast.makeText(MainActivity.this, "Only verfied users can create events ", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 //        Event eventTest = new Event(
@@ -179,5 +196,14 @@ public class MainActivity extends AppCompatActivity {
         Type eventType = new TypeToken<List<Event>>() {}.getType();
         return gson.fromJson(jsonData, eventType);
 
+    }
+    private void openNavigationDrawer() {
+        DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
+        if (drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+            drawerLayout.closeDrawer(Gravity.RIGHT);
+        } else {
+            drawerLayout.openDrawer(Gravity.RIGHT);
+
+        }
     }
 }
