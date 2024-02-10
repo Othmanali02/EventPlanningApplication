@@ -19,6 +19,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -38,16 +39,18 @@ import java.util.Map;
 public class Register_page extends AppCompatActivity {
 
     private EditText userName, loginEmail, phoneNumber, password;
-    private boolean flag=false;
+    private boolean flag = false;
     private Button signUpButton;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private CheckBox Verfied;
+    private String emailsave, passwordsave,namesave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_page);
+
 
         // Initialize Firebase Auth and Firestore
         mAuth = FirebaseAuth.getInstance();
@@ -60,6 +63,7 @@ public class Register_page extends AppCompatActivity {
         password = findViewById(R.id.Password);
         signUpButton = findViewById(R.id.Login_LoginPage);
         Verfied = findViewById(R.id.rememberMe);
+        loadData();
 
         // Sign Up button listener
         signUpButton.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +80,7 @@ public class Register_page extends AppCompatActivity {
         String password = this.password.getText().toString().trim();
         String number = this.phoneNumber.getText().toString().trim();
         boolean verfied = this.Verfied.isChecked();
-        String imageUrl= "no image";
+        String imageUrl = "no image";
 
         if (userName.isEmpty() || email.isEmpty() || password.isEmpty() || number.isEmpty()) {
             Toast.makeText(Register_page.this, "Please fill all fields.", Toast.LENGTH_SHORT).show();
@@ -117,43 +121,87 @@ public class Register_page extends AppCompatActivity {
                 });
     }
 
-    private void saveData(){
+    private void saveData() {
 
-        SharedPreferences sharedPreferences= getSharedPreferences("sharedPreferences",MODE_PRIVATE);
-        SharedPreferences.Editor editor=sharedPreferences.edit();
-        Toast.makeText(this, "flag "+flag, Toast.LENGTH_SHORT).show();
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPreferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Toast.makeText(this, "flag " + flag, Toast.LENGTH_SHORT).show();
         editor.putBoolean("remeberMe", flag);
-        editor.putString("email",loginEmail.getText().toString());
-        editor.putString("password",password.getText().toString());
+        editor.putString("email", loginEmail.getText().toString());
+        editor.putString("password", password.getText().toString());
+        editor.putString("nameUser",userName.getText().toString());
         editor.apply();
     }
- /*   protected void onStart() {
-        super.onStart();
-        ArrayList<User> UserList = new ArrayList<>();
 
-        signUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(isEmpty(userName.getText())||isEmpty(UserEmail.getText())||isEmpty(userPassword.getText())){
-                    Toast.makeText(Register_page.this, "Please enter all data required", Toast.LENGTH_LONG).show();
-                }else{
-                    User user=new User(userName.getText().toString(),
-                            UserEmail.getText().toString(),userPassword.getText().toString(),UserNumber.getText().toString(),false);
-                    UserList.add(user);
-                    SharedPreferences sharedPreferences= getSharedPreferences("sharedPreferences",MODE_PRIVATE);
-                    SharedPreferences.Editor editor=sharedPreferences.edit();
-                    Gson gson = new Gson();
-                    String json =gson.toJson(UserList);
-                    editor.putString("UserList",json);
-                    editor.apply();
-                    Intent intent=new Intent(Register_page.this,LoginPage.class);
-                    startActivity(intent);
+    /*   protected void onStart() {
+           super.onStart();
+           ArrayList<User> UserList = new ArrayList<>();
+
+           signUp.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View view) {
+                   if(isEmpty(userName.getText())||isEmpty(UserEmail.getText())||isEmpty(userPassword.getText())){
+                       Toast.makeText(Register_page.this, "Please enter all data required", Toast.LENGTH_LONG).show();
+                   }else{
+                       User user=new User(userName.getText().toString(),
+                               UserEmail.getText().toString(),userPassword.getText().toString(),UserNumber.getText().toString(),false);
+                       UserList.add(user);
+                       SharedPreferences sharedPreferences= getSharedPreferences("sharedPreferences",MODE_PRIVATE);
+                       SharedPreferences.Editor editor=sharedPreferences.edit();
+                       Gson gson = new Gson();
+                       String json =gson.toJson(UserList);
+                       editor.putString("UserList",json);
+                       editor.apply();
+                       Intent intent=new Intent(Register_page.this,LoginPage.class);
+                       startActivity(intent);
 
 
 
-                }
-            }
-        });
+                   }
+               }
+           });
 
-    }*/
+       }*/
+    @Override
+    protected void onDestroy() {
+        saveData();
+        super.onDestroy();
+    }
+    private void loadData(){
+        SharedPreferences sharedPreferences= getSharedPreferences("sharedPreferences",MODE_PRIVATE);
+        //SharedPreferences.Editor editor=sharedPreferences.edit();
+        // String json=sharedPreferences.getString("UserList",null);
+        flag=sharedPreferences.getBoolean("remeberMe",false);
+        emailsave=sharedPreferences.getString("email",null);
+        namesave=sharedPreferences.getString("nameUser",null);
+        passwordsave=sharedPreferences.getString("password",null);
+       
+
+        if( emailsave != null&&!emailsave.isEmpty()){
+            loginEmail.setText(emailsave);
+        }
+        if(passwordsave != null&&!passwordsave.isEmpty()  ){
+            password.setText(passwordsave);
+        }
+        if( namesave != null &&!namesave.isEmpty() ){
+            userName.setText(namesave);
+        }
+
+
+
+        //flag=false;-+
+
+
+//        if(json!=null){
+//
+//            // Toast.makeText(this, "email"+users.get(position).UserName+" "+users.get(position).UserName, Toast.LENGTH_SHORT).show();
+//
+//        }else{
+//            Toast.makeText(this, "no user found no data ", Toast.LENGTH_SHORT).show();
+//
+//        }
+
+
+
+    }
 }

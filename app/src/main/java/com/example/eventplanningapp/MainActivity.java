@@ -206,4 +206,15 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+    @Override
+    public void onBackPressed() {
+        // Check if the current activity is the DashboardActivity
+        if (getClass().getSimpleName().equals("MainActivity")) {
+            // You can show a Toast message or take any other action
+            Toast.makeText(this, "Back button press disabled on mainActivity", Toast.LENGTH_SHORT).show();
+        } else {
+            // Call the default behavior to allow navigating back for other activities
+            super.onBackPressed();
+        }
+    }
 }
