@@ -1,7 +1,15 @@
 package com.example.eventplanningapp;
 
+import static com.example.eventplanningapp.Profile_page.PICK_IMAGE_REQUEST;
+
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.icu.util.Calendar;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,9 +27,16 @@ import androidx.annotation.Nullable;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 public class CreateEvent extends AppCompatActivity {
     private TextView eventNameUI;
@@ -34,7 +49,10 @@ public class CreateEvent extends AppCompatActivity {
     private TextView eventPlannerUI;
     private TextView eventPricingUI;
 
+    private String fileURI = "";
+    private Button chooseImage;
     private Button createEventButton;
+    private static final int PERMISSION_REQUEST_CODE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +63,7 @@ public class CreateEvent extends AppCompatActivity {
         Log.d("Check Create Event", "it is loading properly");
 
 
+
 //        eventImageUI = findViewById(R.id.eventPic);
         eventNameUI = findViewById(R.id.nameEditText);
         eventLocationUI = findViewById(R.id.locationEditText);
@@ -53,17 +72,27 @@ public class CreateEvent extends AppCompatActivity {
 //        eventPlannerUI = findViewById(R.id.eventPlanner);
         //should get it from Firebase info
         eventPricingUI = findViewById(R.id.eventPricing);
-
-
-
+        chooseImage = findViewById(R.id.chooseImage);
         eventDateUI = findViewById(R.id.dateInput);
         createEventButton = findViewById(R.id.createEventtt);
 
+        chooseImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Open the gallery to choose an image
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, PICK_IMAGE_REQUEST);
+            }
+        });
+
         createEventButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 try{
-                JSONObject eventData = new JSONObject();
+                    Log.d("Bro I messed up a lot last year", fileURI);
+
+                    JSONObject eventData = new JSONObject();
                 eventData.put("eventName", eventNameUI.getText().toString());
                 eventData.put("eventPlanner", "CS Club");
                 //should have the name of the current account here
@@ -72,12 +101,19 @@ public class CreateEvent extends AppCompatActivity {
                 eventData.put("eventDescription", eventDescriptionUI.getText().toString());
                 eventData.put("eventPricing", eventPricingUI.getText().toString());
                 eventData.put("likeCount", "0");
+                String image64 = convertImageToBase64(fileURI);
+                    Log.d("makes sense?", image64);
+                eventData.put("eventImage", image64);
 
                 callFlasktoCreateEvent(eventData);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+                Intent intent = new Intent(CreateEvent.this, MainActivity.class);
+                startActivity(intent);
             }
+
         });
 
         eventDateUI.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +143,68 @@ public class CreateEvent extends AppCompatActivity {
 
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
+            Uri uri = data.getData();
+            String imagePath = "";
+            String[] projection = {MediaStore.Images.Media.DATA};
+            Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+
+            if (cursor != null) {
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(projection[0]);
+                String filePath = cursor.getString(columnIndex);
+                cursor.close();
+                imagePath = filePath;
+            }
+            fileURI = imagePath;
+        }
+    }
+
+
+    public String convertImageToBase64(String imagePath) {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_MEDIA_IMAGES)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.READ_MEDIA_IMAGES},
+                    PERMISSION_REQUEST_CODE);
+            byte[] bytes = readFileToByteArray(new File(imagePath));
+            return Base64.encodeToString(bytes, Base64.DEFAULT);
+        } else {
+            byte[] bytes = readFileToByteArray(new File(imagePath));
+            return Base64.encodeToString(bytes, Base64.DEFAULT);
+        }
+    }
+
+    private byte[] readFileToByteArray(File file) {
+        FileInputStream fis = null;
+        ByteArrayOutputStream bos = null;
+        try {
+            fis = new FileInputStream(file);
+            bos = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = fis.read(buffer)) != -1) {
+                bos.write(buffer, 0, len);
+            }
+            return bos.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                if (fis != null) fis.close();
+                if (bos != null) bos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     private void callFlasktoCreateEvent(JSONObject eventData) {
         String url = "http://10.0.2.2:5000/create";

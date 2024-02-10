@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class Profile_page extends AppCompatActivity {
-    private static final int PICK_IMAGE_REQUEST = 1;
+    static final int PICK_IMAGE_REQUEST = 1;
     private final FirebaseFirestore fireStore = FirebaseFirestore.getInstance();
      private SharedPreferences sharedPreferences;
     private ImageButton profileImage;

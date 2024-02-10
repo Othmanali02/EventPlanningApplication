@@ -3,7 +3,7 @@ package com.example.eventplanningapp;
 public class Event {
     public int eventID;
     public String eventName;
-    public int eventImage;
+    public String eventImage;
     public String eventDate;
     public String eventDescription;
 
@@ -15,7 +15,7 @@ public class Event {
     public Event() {
     }
 
-    public Event(int eventID, String eventName, int eventImage, String eventDate, String eventDescription, String likeCount, String eventLocation, String eventPlanner, String eventPricing) {
+    public Event(int eventID, String eventName, String eventImage, String eventDate, String eventDescription, String likeCount, String eventLocation, String eventPlanner, String eventPricing) {
         this.eventID = eventID;
         this.eventName = eventName;
         this.eventImage = eventImage;
@@ -39,13 +39,10 @@ public class Event {
         this.eventName = eventName;
     }
 
-    public int getEventImage() {
+    public String getEventImage() {
         return eventImage;
     }
 
-    public void setEventImage(int eventImage) {
-        this.eventImage = eventImage;
-    }
 
     public String getEventDate() {
         return eventDate;

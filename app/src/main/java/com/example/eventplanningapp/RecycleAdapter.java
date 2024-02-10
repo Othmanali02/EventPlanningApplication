@@ -2,7 +2,10 @@ package com.example.eventplanningapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +47,12 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
 
 //        Drawable drawable = ContextCompat.getDrawable(holder.image.getContext(), event.getEventImage());
 //
-        holder.image.setImageResource(event.getEventImage());
+        String base64Image = event.getEventImage();
+        byte[] decodedBytes = Base64.decode(base64Image, Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+
+        holder.image.setImageBitmap(bitmap);
+
         holder.count.setText(event.getLikeCount());
 
         holder.itemView.setOnClickListener(view -> {

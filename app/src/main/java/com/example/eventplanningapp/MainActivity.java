@@ -66,11 +66,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // Event planner app
         setContentView(R.layout.activity_main);
+        int resourceId = getResources().getIdentifier("arts", "drawable", getPackageName());
 
-        setContentView(R.layout.activity_main);
+        Log.d("IMAGE RESOURCE ID", resourceId + "");
 
         recyclerView = findViewById(R.id.followingEvents);
         profileBtn = findViewById(R.id.ProfilePage);
@@ -184,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
                 },
                 error -> {
                     error.printStackTrace();
+                    Log.d("ERROR", error.getMessage());
                 }
         );
 
@@ -195,7 +196,6 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         Type eventType = new TypeToken<List<Event>>() {}.getType();
         return gson.fromJson(jsonData, eventType);
-
     }
     private void openNavigationDrawer() {
         DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);

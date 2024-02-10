@@ -9,6 +9,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -30,12 +31,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.icu.util.Calendar;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -55,6 +62,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class EditEvent extends AppCompatActivity {
     private TextView eventNameUI;
     private TextView eventLocationUI;
@@ -66,6 +75,7 @@ public class EditEvent extends AppCompatActivity {
     private TextView eventDescriptionUI;
     private TextView eventPlannerUI;
     private TextView eventPricingUI;
+    private Button deleteButton;
 
     private Button createEventButton;
     private final FirebaseFirestore fireStore = FirebaseFirestore.getInstance();
@@ -77,7 +87,7 @@ public class EditEvent extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.createevent);
+        setContentView(R.layout.editevent);
 
          email=sharedPreferences.getString("email","No Email");
         getname();
@@ -103,8 +113,12 @@ public class EditEvent extends AppCompatActivity {
         });
 
 
+        Intent intent = getIntent();
+        String eventID = intent.getStringExtra("eventID");
+        Log.d("event ID", eventID);
 
         createEventButton = findViewById(R.id.createEventtt);
+        deleteButton = findViewById(R.id.deleteEventtt);
 
         createEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,7 +135,7 @@ public class EditEvent extends AppCompatActivity {
                     eventData.put("eventPricing", eventPricingUI.getText().toString());
                     eventData.put("likeCount", "0");
 
-                    callFlasktoCreateEvent(eventData);
+                    callFlasktoCreateEvent(eventID, eventData);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -129,6 +143,18 @@ public class EditEvent extends AppCompatActivity {
                          Toast.makeText(EditEvent.this, "only verfied users can edit", Toast.LENGTH_SHORT).show();
                      }
         }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+
+                   deleteEvent(eventID);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         });
 
         eventDateUI.setOnClickListener(new View.OnClickListener() {
@@ -154,22 +180,48 @@ public class EditEvent extends AppCompatActivity {
                 dpd.show(getSupportFragmentManager(), "DatePickerDialog");
             }
         });
-
-
-
     }
 
-    private void callFlasktoCreateEvent(JSONObject eventData) {
-        String url = "http://10.0.2.2:5000/create";
+    private void deleteEvent(String id) {
+        String url = "http://10.0.2.2:5000/delete/" +id;
+        JSONObject mock = new JSONObject();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.POST,
+                url,
+                mock,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("This is supposed to be the response.", response.toString());
+                        Intent intent = new Intent(EditEvent.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                }
+        );
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    private void callFlasktoCreateEvent(String id, JSONObject eventData) {
+        String url = "http://10.0.2.2:5000/update/" +id;
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.PUT,
                 url,
                 eventData,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d("This is supposed to be the response.", response.toString());
+                        Intent intent = new Intent(EditEvent.this, MainActivity.class);
+                        startActivity(intent);
                     }
                 },
                 new Response.ErrorListener() {
