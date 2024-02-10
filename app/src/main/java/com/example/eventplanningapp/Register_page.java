@@ -175,7 +175,7 @@ public class Register_page extends AppCompatActivity {
         emailsave=sharedPreferences.getString("email",null);
         namesave=sharedPreferences.getString("nameUser",null);
         passwordsave=sharedPreferences.getString("password",null);
-       
+
 
         if( emailsave != null&&!emailsave.isEmpty()){
             loginEmail.setText(emailsave);

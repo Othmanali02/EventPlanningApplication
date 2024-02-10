@@ -105,12 +105,7 @@ public class EditEvent extends AppCompatActivity {
         eventPricingUI = findViewById(R.id.eventPricing);
         eventDateUI = findViewById(R.id.dateInput);
         Menu = findViewById(R.id.burgerMenu);
-        Menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openNavigationDrawer();
-            }
-        });
+
 
 
         Intent intent = getIntent();
@@ -249,13 +244,13 @@ public class EditEvent extends AppCompatActivity {
 
         }
     }
-    private void openNavigationDrawer() {
-        DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
-        if (drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
-            drawerLayout.closeDrawer(Gravity.RIGHT);
-        } else {
-            drawerLayout.openDrawer(Gravity.RIGHT);
-
-        }
-    }
+//    private void openNavigationDrawer() {
+//        DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
+//        if (drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+//            drawerLayout.closeDrawer(Gravity.RIGHT);
+//        } else {
+//            drawerLayout.openDrawer(Gravity.RIGHT);
+//
+//        }
+//    }
 }
